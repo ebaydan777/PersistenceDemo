@@ -1,0 +1,53 @@
+package edu.mesa.persistencedemo;
+
+import android.content.SharedPreferences;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+
+import java.util.Random;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+
+    SharedPreferences prefs;
+    SharedPreferences.Editor editor;
+    String dataName = "MyData";
+    String stringName = "MyString";
+    String defaultString = ":-(";
+    String currentString = "";
+    Button button1;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        prefs = getSharedPreferences(dataName, MODE_PRIVATE);
+        editor = prefs.edit();
+
+        currentString = prefs.getString(stringName, defaultString);
+
+        button1 = (Button) findViewById(R.id.button1);
+
+        button1.setOnClickListener(this);
+
+        button1.setText(currentString);
+
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        Random randInt = new Random();
+        int ourRandom = randInt.nextInt(10);
+
+        currentString = currentString + ourRandom;
+
+        editor.putString(stringName, currentString);
+        editor.commit();
+
+        button1.setText(currentString);
+
+    }
+}
